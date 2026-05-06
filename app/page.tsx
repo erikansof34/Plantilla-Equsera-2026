@@ -7,7 +7,7 @@ import { structuredCourse } from "@/lib/course/content/course";
 export default function DemoPage() {
   const { currentSlideId, goToNext, goBack, goToSlide, reset } = useCourseNavigation({
     course: structuredCourse,
-    initialSlideId: "m1-l2-s1",
+    initialSlideId: "intro-cover",
     onCourseComplete: () => reset(),
   });
 

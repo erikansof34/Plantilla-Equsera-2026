@@ -129,8 +129,17 @@ export function LearningPathScreen({
           </div>
         </div>
 
+        <div className="pb-4">
+          {/* AudioPlayer */}
+          <AudioPlayer
+            src=""
+            duration={content.preparationSection.audioDuration}
+            variant="card"
+          />
+        </div>
+
         {/* Audio CTA Button */}
-        {content.audioCta && (
+        {/* {content.audioCta && (
           <>
             <button
               onClick={onListenAudio}
@@ -143,10 +152,10 @@ export function LearningPathScreen({
             </button>
             <div className="border-b border-gray-200 mb-6" />
           </>
-        )}
+        )} */}
 
         {/* Preparation Section */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <div className="bg-[#F5F3EE] rounded-[24px] border-t-4 border-[#052A0B] p-8">
             <div className="flex items-center gap-2 mb-4">
               <div className="h-8 w-8 rounded-full bg-[#052A0B] flex items-center justify-center">
@@ -171,7 +180,7 @@ export function LearningPathScreen({
               variant="card"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Navigation Buttons */}
         <div className="grid grid-cols-2 gap-3 pb-2">

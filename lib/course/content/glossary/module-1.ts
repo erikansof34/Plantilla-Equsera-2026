@@ -4,7 +4,7 @@ export const module1Glossary: ModuleStructure["glossary"] = {
   slideId: "m1-glossary",
   navbarTitle: "Glosario - Módulo 1",
   title: "Módulo 1: Las zonas de seguridad del Caballo",
-  subtitle: "GLOSARIO EQUINO DEL MÓDULO:",
+  subtitle: "¡Qué útil es hablar apropiadamente!",
   image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=600",
   imageCaption: "Para este módulo las PALABRAS CLAVE son:",
   terms: [
@@ -53,6 +53,6 @@ export const module1Glossary: ModuleStructure["glossary"] = {
   helperText:
     "Si deseas consultarlas de nuevo, podrás encontrarlas en orden alfabético o utilizar el buscador de términos para mayor facilidad.",
   quote:
-    "El punto ciego detrás del caballo. Un caballo no puede ver directamente detrás de su cuerpo. Esto crea una zona ciega donde el movimiento se detecta tarde o no se detecta.",
+    "RECUERDA:  Conocer los términos clave de la industria equina es parte fundamental de la profesionalización del trabajo que haces a diario con los Caballos.​",
 };
 

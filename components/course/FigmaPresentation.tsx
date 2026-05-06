@@ -25,7 +25,7 @@ import { module1Completion } from "@/lib/course/content/evaluation";
 // Datos de ejemplo para todas las pantallas
 const exampleData = {
   cover: {
-    logo: "/images/logo-equsera.png",
+    logo: "/img/logo_blanco_sin_fondo.png",
     logoAlt: "EQUSERA",
     titleLine1: "CURSO DE",
     titleLine2: "EQUITACIÓN",

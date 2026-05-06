@@ -4,17 +4,17 @@ export const introductionMethodology: CourseStructure["introduction"]["methodolo
   slideId: "intro-methodology",
   navbarTitle: "Metodología",
   content: {
-    badge: "CURSO PREMIUM",
+    badge: "CADA SEMANA RECIBIRÁS",
     title: "METODOLOGÍA DEL CURSO",
     subtitle: "Cómo sacarle el máximo provecho CADA SEMANA a este curso",
-    image: "https://images.unsplash.com/photo-1584515933487-779824d29309?w=800",
+    image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=800",
     editorialNote: {
-      badge: "NOTA EDITORIAL",
-      text: "Debemos definir la frecuencia de la liberación de los módulos o si lanzamos un curso corto de 4 módulos y luego el curso completo opcional para certificación.",
+      badge: "NOTA DEL EXPERTO",
+      text: "Este curso y todos sus contenidos han sido diseñados para generar una experiencia de aprendizaje positiva y práctica. Observa el video donde al experto nos cuenta cómo estudiar y aplicar los aprendizajes que obtendrás.",
     },
     videoCta: {
-      label: "VER VIDEO RECOMENDACIONES",
-      icon: "play",
+      label: "HAZ CLIC PARA VER EL VIDEO",
+      overlayText: "Haz clic para ver el vídeo",
     },
     weeklyFeatures: [
       { id: "wf1", icon: "book", title: "Glosario y partes del caballo de la semana" },

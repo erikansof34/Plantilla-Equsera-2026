@@ -80,6 +80,11 @@ export function SlideRenderer({
           backgroundImage={course.meta.coverImage}
           ctaLabel={data.ctaLabel}
           helperText={data.helperText}
+          footerText={data.footerText}
+          copyrightText={data.copyrightText}
+          copyrightModalTitle={data.copyrightModalTitle}
+          copyrightModalDescription={data.copyrightModalDescription}
+          copyrightModalFooter={data.copyrightModalFooter}
           onStart={onNext}
         />
       );
@@ -113,20 +118,13 @@ export function SlideRenderer({
 
     case "learning-path": {
       const data = slideInfo.data as LearningPathSlideData;
-      const firstGlossarySlideId = course.modules[0]?.glossary.slideId;
       return (
         <LearningPathScreen
           lessonNumber={position.lessonCurrent}
           totalLessons={position.lessonTotal}
           content={data.content}
           modules={modules}
-          onContinue={() => {
-            if (firstGlossarySlideId && onGoToSlide) {
-              onGoToSlide(firstGlossarySlideId);
-              return;
-            }
-            onNext();
-          }}
+          onContinue={onNext}
           onBack={onBack}
         />
       );

@@ -119,7 +119,8 @@ export interface EditorialNote {
 
 export interface VideoCta {
   label: string;
-  icon: string;
+  icon?: string;
+  overlayText?: string;
 }
 
 export interface WeeklyFeature {

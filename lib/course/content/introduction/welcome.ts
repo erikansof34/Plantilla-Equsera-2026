@@ -12,24 +12,19 @@ export const introductionWelcome: CourseStructure["introduction"]["welcome"] = {
     paragraphs: [
       {
         id: "w-p1",
-        text: "Nos alegra contar con tu participación en esta experiencia de aprendizaje, diseñada especialmente para quienes trabajan día a día con caballos en el campo o centros ecuestres.",
+        text: "Nos alegra contar con tu participación en esta experiencia de aprendizaje, diseñada especialmente para quienes trabajan día a día con caballos, así como para toda persona que desee comprenderlos en mayor profundidad, y desarrollar una práctica más consciente. diseñada especialmente para quienes trabajan día a día con caballos en el campo o centros ecuestres.",
       },
-      {
-        id: "w-p2",
-        text: "Este proceso también te permitirá mejorar tu trabajo diario, fortaleciendo el vínculo con el equino a través de técnicas de manejo ético y comunicación efectiva.",
-      },
+      // {
+      //   id: "w-p2",
+      //   text: "Este proceso también te permitirá mejorar tu trabajo diario, fortaleciendo el vínculo con el equino a través de técnicas de manejo ético y comunicación efectiva.",
+      // },
     ],
     audioSections: [
       {
         id: "w-a1",
         label: "HAZ CLIC PARA ESCUCHAR EL COMPLEMENTO",
-        src: "/audio/welcome-1.mp3",
+        src: "/audio/sld_bievenidos_nos_alegra.mp3",
         duration: "01:45",
-      },
-      {
-        id: "w-a2",
-        src: "/audio/welcome-2.mp3",
-        duration: "02:12",
       },
     ],
   },

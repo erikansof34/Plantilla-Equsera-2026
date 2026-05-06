@@ -7,6 +7,7 @@ import { BackButton } from "../ui/BackButton";
 import { ContinueButton } from "../ui/ContinueButton";
 import { AudioPlayer } from "../media/AudioPlayer";
 import { VideoPlayer } from "../media/VideoPlayer";
+import { WelcomeInfoCard } from "../ui/WelcomeInfoCard";
 import { CourseParagraph, CourseTitle } from "../ui/Typography";
 import type { WelcomeContent } from "@/lib/course/types";
 
@@ -82,7 +83,7 @@ export function WelcomeScreen({
               }}
             >
               {paragraph && (
-                <CourseParagraph className="mb-4 leading-[1.7]">
+                <CourseParagraph className="mb-4 leading-[1.7] text-[16px]">
                   {paragraph.text}
                 </CourseParagraph>
               )}
@@ -90,7 +91,7 @@ export function WelcomeScreen({
               {audio && (
                 <div>
                   {audio.label && (
-                    <p className="text-[11px] font-bold uppercase tracking-[1.5px] text-course-text-muted mb-3">
+                    <p className="text-[14px] font-bold uppercase tracking-[1.5px] text-course-text-muted mb-3">
                       {audio.label}
                     </p>
                   )}
@@ -105,6 +106,13 @@ export function WelcomeScreen({
             </div>
           );
         })}
+
+        <WelcomeInfoCard
+          title="HORSE POWER"
+          description="Tu rol es fundamental para la salud y buen desempeño de los caballos, este curso te dará las herramientas para hacer aún mejor lo que ya haces."
+          highlightText="Si estás empezando en esta industria, también eres muy bienvenido a aprender y aplicar todo lo aprendido!"
+          className="mb-6"
+        />
 
         {/* Navigation Buttons */}
         <div className="mt-8 pb-6">

@@ -6,7 +6,7 @@ import { BackButton } from "../ui/BackButton";
 import { ContinueButton } from "../ui/ContinueButton";
 import { CitationCard } from "../content/CitationCard";
 import { GlossarySearch } from "../interactive/GlossarySearch";
-import { CourseSubtitle, CourseParagraph } from "../ui/Typography";
+import { CourseTitle, CourseParagraph } from "../ui/Typography";
 import type { GlossaryTerm } from "@/lib/course/types";
 
 export interface GlossaryScreenProps {
@@ -53,6 +53,7 @@ const GLOSSARY_INTRO_COPY = [
 export function GlossaryScreen({
   lessonNumber,
   totalLessons,
+  subtitle,
   terms,
   quote,
   navbarTitle,
@@ -76,9 +77,14 @@ export function GlossaryScreen({
       <div className="px-6 py-4 bg-[#FBF9F4]">
         {/* Título fijo de plantilla (no usa el título del módulo) */}
         <div className="mb-6">
-          <CourseSubtitle bold className="text-course-text-primary text-[18px] leading-snug">
+          <CourseTitle className="text-course-text-primary leading-snug">
             Glosario Equino:
-          </CourseSubtitle>
+          </CourseTitle>
+          {subtitle && (
+            <p className="mt-1 font-bold text-course-text-primary text-base">
+              {subtitle}
+            </p>
+          )}
           <CourseParagraph className="mt-3 text-course-text-secondary leading-relaxed whitespace-pre-line">
             {GLOSSARY_INTRO_COPY}
           </CourseParagraph>
@@ -93,7 +99,7 @@ export function GlossaryScreen({
         )}
 
         {/* Navigation Buttons */}
-        <div className="grid grid-cols-2 gap-3 pb-2">
+        <div className="grid grid-cols-2 pt-32 gap-3 pb-2">
           <BackButton onClick={onBack} fullWidth />
           <ContinueButton onClick={onContinue} fullWidth />
         </div>

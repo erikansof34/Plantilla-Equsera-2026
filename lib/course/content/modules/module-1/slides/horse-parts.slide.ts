@@ -5,7 +5,7 @@ export const horsePartsSlide: SlideStructure = {
   type: "horse-parts",
   order: 1,
   content: {
-    topLabel: "TEMA 0 - INTRODUCCIÓN - METODOLOGÍA",
+    topLabel: "",
     title: "Partes del Caballo:",
     paragraphs: [
       {
@@ -38,7 +38,7 @@ export const horsePartsSlide: SlideStructure = {
     quotes: [
       {
         id: "q1",
-        text: "Cuando estés cerca a un caballo, evita producir ruidos y movimientos bruscos",
+        text: "RECUERDA: Cuando estés cerca a un caballo, evita producir ruidos y movimientos bruscos",
         variant: "highlight",
       },
     ],

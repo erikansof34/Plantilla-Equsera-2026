@@ -180,6 +180,11 @@ export interface CoverSlideData {
   subtitle: string;
   ctaLabel: string;
   helperText: string;
+  footerText?: string;
+  copyrightText?: string;
+  copyrightModalTitle?: string;
+  copyrightModalDescription?: string;
+  copyrightModalFooter?: string;
 }
 
 export interface WelcomeSlideData {
@@ -380,9 +385,9 @@ export function getSlidePosition(
   // Count intro slides
   const introSlideIds = [
     course.introduction.cover.slideId,
+    course.introduction.learningPath.slideId,
     course.introduction.welcome.slideId,
     course.introduction.methodology.slideId,
-    course.introduction.learningPath.slideId,
   ];
   
   const introIndex = introSlideIds.indexOf(path.slideId);
@@ -439,11 +444,11 @@ export function getNextSlide(
 ): string | null {
   const allSlides = flattenSlides(course);
   const currentIndex = allSlides.findIndex(s => s.id === currentSlideId);
-  
+
   if (currentIndex === -1 || currentIndex === allSlides.length - 1) {
     return null;
   }
-  
+
   return allSlides[currentIndex + 1].id;
 }
 
@@ -453,11 +458,11 @@ export function getPreviousSlide(
 ): string | null {
   const allSlides = flattenSlides(course);
   const currentIndex = allSlides.findIndex(s => s.id === currentSlideId);
-  
+
   if (currentIndex <= 0) {
     return null;
   }
-  
+
   return allSlides[currentIndex - 1].id;
 }
 
@@ -473,9 +478,9 @@ export function flattenSlides(course: CourseStructure): FlatSlide[] {
   
   // Intro slides
   slides.push({ id: course.introduction.cover.slideId, type: "cover" });
+  slides.push({ id: course.introduction.learningPath.slideId, type: "learning-path" });
   slides.push({ id: course.introduction.welcome.slideId, type: "welcome" });
   slides.push({ id: course.introduction.methodology.slideId, type: "methodology" });
-  slides.push({ id: course.introduction.learningPath.slideId, type: "learning-path" });
   
   // Module slides
   for (const module of course.modules) {

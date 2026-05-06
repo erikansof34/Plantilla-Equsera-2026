@@ -74,11 +74,10 @@ export function GlossarySearch({
         </div>
       </div>
 
-      {/* Terms List */}
-      <div className="space-y-4">
+      {/* Terms List — temporalmente oculto */}
+      {/* <div className="space-y-4">
         {filteredTerms.map((term) => {
           const Icon = iconMap[term.icon] || Shield;
-
           return (
             <GlossaryTermCard
               key={term.id}
@@ -86,26 +85,16 @@ export function GlossarySearch({
               term={term.term}
               definition={term.definition}
               accent={termAccent(term.color)}
-              icon={
-                <Icon
-                  className="h-[18px] w-[18px] text-inherit"
-                  strokeWidth={2}
-                  aria-hidden
-                />
-              }
+              icon={<Icon className="h-[18px] w-[18px] text-inherit" strokeWidth={2} aria-hidden />}
             />
           );
         })}
       </div>
-
-      {/* Empty State */}
       {filteredTerms.length === 0 && (
         <div className="text-center py-8">
-          <p className="text-sm text-course-text-muted">
-            No se encontraron términos para tu búsqueda.
-          </p>
+          <p className="text-sm text-course-text-muted">No se encontraron términos para tu búsqueda.</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

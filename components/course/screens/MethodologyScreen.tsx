@@ -1,13 +1,13 @@
 "use client";
 
-import Image from "next/image";
-import { Play, BookOpen, GraduationCap, Target } from "lucide-react";
+import { BookOpen, GraduationCap, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CourseLayout } from "../layouts/CourseLayout";
 import { BackButton } from "../ui/BackButton";
 import { ContinueButton } from "../ui/ContinueButton";
 import { CourseTitle, CourseSubtitle, CourseParagraph, CourseFeatureText } from "../ui/Typography";
 import { ContentCard } from "../content/ContentCard";
+import { VideoPlayer } from "../media/VideoPlayer";
 import type { MethodologyContent, WeeklyFeature } from "@/lib/course/types";
 
 export interface MethodologyScreenProps {
@@ -71,41 +71,28 @@ export function MethodologyScreen({
           <CourseParagraph className="mt-2">{content.subtitle}</CourseParagraph>
         </div>
 
-        {/* Main Image */}
-        <div className="relative h-[170px] rounded-[14px] overflow-hidden mb-5">
-          <Image
-            src={content.image}
-            alt="Metodología del curso"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 400px"
-          />
-        </div>
-
         {/* Editorial Note */}
         <ContentCard
           variant="editorial"
           badge={content.editorialNote.badge}
           className="mb-6 rounded-[12px] course-card px-4 py-5"
         >
-          <CourseParagraph className="italic text-[16px]">
-            {`"${content.editorialNote.text}"`}
+          <CourseParagraph className="text-[16px]">
+            {content.editorialNote.text}
           </CourseParagraph>
         </ContentCard>
 
-        {/* Video CTA */}
+        {/* Video Player */}
         {content.videoCta && (
-          <button
-            onClick={onWatchVideo}
-            className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-[#D3E5CE] border border-[#C3D9BD] rounded-xl transition-colors mb-8"
-          >
-            <div className="flex items-center justify-center h-5 w-5 border border-[#1b1c19]/60 rounded-full">
-              <Play className="h-2.5 w-2.5 text-[#1b1c19] ml-0.5" />
-            </div>
-            <span className="text-[12px] font-black text-course-text-primary uppercase tracking-[0.6px]">
-              {content.videoCta.label}
-            </span>
-          </button>
+          <div className="mb-8">
+            <VideoPlayer
+              src=""
+              thumbnail={content.image}
+              overlayText={content.videoCta.overlayText || "Haz clic para ver el vídeo"}
+              height={280}
+              className="rounded-[14px] overflow-hidden"
+            />
+          </div>
         )}
 
         {/* Weekly Features */}
@@ -116,30 +103,35 @@ export function MethodologyScreen({
           >
             Así avanzarás cada semana:
           </CourseSubtitle>
-          <CourseParagraph className="mb-4">
+          <CourseParagraph className="mb-4 text-[16px]">
             Cada semana se activará una microlección que contendrá:
           </CourseParagraph>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {content.weeklyFeatures.map((feature) => {
               const Icon = featureIconMap[feature.icon] || BookOpen;
 
               return (
                 <div
                   key={feature.id}
-                  className="flex flex-col items-center text-center p-5 bg-white border border-[#E7E3DB] rounded-[12px]"
+                  className="flex flex-col items-center text-center p-6 bg-white border border-[#E7E3DB] rounded-[16px] shadow-sm"
                 >
-                  <div className="flex items-center justify-center h-12 w-12 bg-[#D3E5CE] rounded-full mb-3">
-                    <Icon className="h-5 w-5 text-course-gold" />
+                  <div className="flex items-center justify-center h-14 w-14 bg-[#D3E5CE] rounded-full mb-4">
+                    <Icon className="h-6 w-6 text-[#7B620A]" />
                   </div>
-                  <CourseFeatureText>
+                  <p className="text-[14px] font-semibold text-course-text-primary leading-[1.5]">
                     {feature.title}
-                  </CourseFeatureText>
+                  </p>
                 </div>
               );
             })}
           </div>
         </div>
+
+        {/* Disclaimer Button */}
+        <button className="w-full px-5 py-3 mb-3 border-2 border-[#1b1c19] text-[#1b1c19] font-black rounded-[20px] text-[14px] uppercase tracking-[0.5px] hover:bg-gray-50 transition-colors">
+          Disclaimer del Experto
+        </button>
 
         {/* Navigation Buttons */}
         <div className="grid grid-cols-2 gap-3 pb-2">

@@ -2,6 +2,14 @@
 
 import Image from "next/image";
 import { Globe, Accessibility } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import type { Feature } from "@/lib/course/types";
 
@@ -24,6 +32,16 @@ export interface CoverScreenProps {
   ctaLabel?: string;
   /** Texto inferior de ayuda */
   helperText?: string;
+  /** Texto adicional en el pie de portada (powered by) */
+  footerText?: string;
+  /** Texto clicable de copyright */
+  copyrightText?: string;
+  /** Título del modal de copyright */
+  copyrightModalTitle?: string;
+  /** Descripción del modal de copyright */
+  copyrightModalDescription?: string;
+  /** Texto inferior en el modal de copyright */
+  copyrightModalFooter?: string;
   /** Callback del botón CTA */
   onStart?: () => void;
   /** Mostrar selector de idioma */
@@ -44,6 +62,11 @@ export function CoverScreen({
   backgroundImage,
   ctaLabel = "COMENZAR",
   helperText,
+  footerText,
+  copyrightText,
+  copyrightModalTitle,
+  copyrightModalDescription,
+  copyrightModalFooter,
   onStart,
   showLanguageSelector = true,
   showAccessibility = true,
@@ -100,7 +123,7 @@ export function CoverScreen({
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col px-8 pt-8 pb-10">
+        <main className="flex-1 flex flex-col px-8 pt-8 pb-6">
           {/* Title */}
           <div className="text-center mb-7">
             <h1 className="font-sans font-black tracking-[-0.9px] drop-shadow-[0_0_10px_rgba(0,0,0,0.9)]">
@@ -122,7 +145,7 @@ export function CoverScreen({
           </p>
 
           {/* Features */}
-          <div className="space-y-4 mb-auto">
+          <div className="space-y-4 mb-2">
             {features.map((feature) => (
               <div
                 key={feature.id}
@@ -143,7 +166,7 @@ export function CoverScreen({
           <div className="mb-4">
             <button
               onClick={onStart}
-              className="w-full h-20 rounded-full border-2 border-[#BCE7B8]/30 bg-[#A8D1A3] text-[#143817] font-black text-[20px] tracking-[-0.3px] flex items-center justify-center gap-3 shadow-[0_10px_40px_rgba(168,238,190,0.25)]"
+              className="w-full h-16 rounded-full border-2 border-[#BCE7B8]/30 bg-[#A8D1A3] text-[#143817] font-black text-[18px] tracking-[-0.3px] flex items-center justify-center gap-3 shadow-[0_10px_40px_rgba(168,238,190,0.25)]"
             >
               <span>{ctaLabel}</span>
               <span className="text-2xl">→</span>
@@ -154,6 +177,43 @@ export function CoverScreen({
           {helperText && (
             <p className="text-center text-white/70 text-xs uppercase tracking-[2.6px] font-bold">
               {helperText}
+            </p>
+          )}
+          {copyrightText && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <button
+                  type="button"
+                  className="mx-auto mt-3 block text-center text-[0.75rem] text-white font-bold underline underline-offset-4 decoration-current decoration-1 transition hover:text-[#F3D98D]"
+                >
+                  {copyrightText}
+                </button>
+              </DialogTrigger>
+              <DialogContent className="bg-[#0f1611] border border-white/10 text-white shadow-[0_25px_80px_rgba(0,0,0,0.8)] p-6 rounded-[32px] max-w-[90vw] sm:max-w-[520px]">
+                <DialogHeader>
+                  <DialogTitle className="text-sm uppercase tracking-[2px] text-course-gold font-bold text-center">
+                    {copyrightModalTitle ?? "TODOS LOS DERECHOS RESERVADOS"}
+                  </DialogTitle>
+                  <div className="mx-auto mt-4 mb-4 h-[1px] w-24 bg-[#6d683e]" />
+                </DialogHeader>
+                <DialogDescription className="text-sm leading-7 text-white/80">
+                  {copyrightModalDescription ??
+                    "Ninguna parte de este material puede reproducirse por ningún medio, incluyendo impresión, fotocopiado, grabación de audio o video, o cualquier sistema de almacenamiento o recuperación de información, sin permiso por escrito del titular de los derechos de autor."}
+                </DialogDescription>
+                <a
+                  href="https://workage.us/blog"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-block text-course-gold font-bold underline underline-offset-4 decoration-current decoration-1 transition hover:text-[#F3D98D]"
+                >
+                  {copyrightModalFooter ?? "Powered by Workage Institute →"}
+                </a>
+              </DialogContent>
+            </Dialog>
+          )}
+          {footerText && (
+            <p className="text-center text-course-gold text-[0.75rem] leading-[1.4] mt-3 font-bold whitespace-pre-line">
+              {footerText}
             </p>
           )}
         </footer>

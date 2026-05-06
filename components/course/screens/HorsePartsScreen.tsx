@@ -8,6 +8,7 @@ import { ContentCard } from "../content/ContentCard";
 import { CitationCard } from "../content/CitationCard";
 import { LearningObjectiveItem } from "../content/LearningObjectiveItem";
 import { PartsSwiper } from "../media/PartsSwiper";
+import { CourseTitle } from "../ui/Typography";
 import type { SlideContent } from "@/lib/course/types";
 
 export interface HorsePartsScreenProps {
@@ -58,9 +59,9 @@ export function HorsePartsScreen({
 
         {/* Title */}
         {content.title && (
-          <h1 className="mb-6 text-[44px] font-black leading-[1.05] tracking-[-0.5px] text-[#051B0F]">
+          <CourseTitle className="mb-6 text-[#051B0F]">
             {content.title}
-          </h1>
+          </CourseTitle>
         )}
 
         {/* Intro Paragraph */}
@@ -93,7 +94,7 @@ export function HorsePartsScreen({
                   key={objective.id}
                   text={objective.text}
                   completed
-                  className="[&_span]:text-[15px] [&_span]:leading-[1.45]"
+                  className="[&_span]:text-[16px] [&_span]:leading-[1.55]"
                 />
               ))}
             </div>
