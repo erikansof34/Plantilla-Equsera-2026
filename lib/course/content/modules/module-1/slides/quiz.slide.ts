@@ -1,7 +1,7 @@
 import type { SlideStructure } from "../../../../course-structure";
 
 export const quizSlide: SlideStructure = {
-  id: "m1-l8-s1",
+  id: "module-1-quiz",
   type: "quiz",
   order: 1,
   isRequired: true,

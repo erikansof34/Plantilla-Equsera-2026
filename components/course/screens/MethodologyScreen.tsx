@@ -101,10 +101,10 @@ export function MethodologyScreen({
             bold
             className="mb-2 text-[color:var(--course-welcome-highlight-color)]"
           >
-            Así avanzarás cada semana:
+            Así avanzarás:
           </CourseSubtitle>
           <CourseParagraph className="mb-4 text-[16px]">
-            Cada semana se activará una microlección que contendrá:
+            Se activará una microlección que contendrá:
           </CourseParagraph>
 
           <div className="space-y-3">

@@ -1,7 +1,7 @@
 import type { SlideStructure } from "../../../../course-structure";
 
 export const caseStudySlide: SlideStructure = {
-  id: "m1-l6-s1",
+  id: "module-1-case-study",
   type: "case-study",
   order: 1,
   content: {

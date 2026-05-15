@@ -180,6 +180,9 @@ export interface CoverSlideData {
   subtitle: string;
   ctaLabel: string;
   helperText: string;
+  backgroundImage?: string;
+  backgroundVideo?: string;
+  videoOpacity?: number;
   footerText?: string;
   copyrightText?: string;
   copyrightModalTitle?: string;
@@ -217,11 +220,12 @@ export interface ModuleStructure {
   description: string;
   thumbnail: string;
   status: "active" | "locked" | "completed";
-  
+
   // Contenido del módulo
   glossary: GlossarySlideData;
   lessons: LessonStructure[];
   completion: CompletionSlideData;
+  learningPathCheckpoint?: LearningPathSlideData;
 }
 
 export interface GlossarySlideData {
@@ -358,18 +362,19 @@ export interface NavigationPath {
 }
 
 export function calculateTotalSlides(course: CourseStructure): number {
-  // 4 slides de introducción (cover, welcome, methodology, learningPath)
+  // 4 slides de introducción (cover, learningPath, welcome, methodology)
   let total = 4;
-  
+
   for (const module of course.modules) {
     // 1 slide de glosario + 1 de completion
     total += 2;
-    
+    if (module.learningPathCheckpoint) total += 1;
+
     for (const lesson of module.lessons) {
       total += lesson.slides.length;
     }
   }
-  
+
   return total;
 }
 
@@ -484,13 +489,14 @@ export function flattenSlides(course: CourseStructure): FlatSlide[] {
   
   // Module slides
   for (const module of course.modules) {
-    slides.push({ 
-      id: module.glossary.slideId, 
+    slides.push({
+      id: module.glossary.slideId,
       type: "glossary",
-      moduleId: module.id 
+      moduleId: module.id,
     });
-    
-    for (const lesson of module.lessons) {
+
+    for (let li = 0; li < module.lessons.length; li++) {
+      const lesson = module.lessons[li];
       for (const slide of lesson.slides) {
         slides.push({
           id: slide.id,
@@ -499,12 +505,20 @@ export function flattenSlides(course: CourseStructure): FlatSlide[] {
           lessonId: lesson.id,
         });
       }
+      // Checkpoint de ruta de aprendizaje tras la primera lección
+      if (li === 0 && module.learningPathCheckpoint) {
+        slides.push({
+          id: module.learningPathCheckpoint.slideId,
+          type: "learning-path",
+          moduleId: module.id,
+        });
+      }
     }
-    
-    slides.push({ 
-      id: module.completion.slideId, 
+
+    slides.push({
+      id: module.completion.slideId,
       type: "completion",
-      moduleId: module.id 
+      moduleId: module.id,
     });
   }
   
@@ -538,20 +552,24 @@ export function getSlideById(
     if (module.glossary.slideId === slideId) {
       return { type: "glossary", data: module.glossary, moduleId: module.id };
     }
-    
+
     for (const lesson of module.lessons) {
       for (const slide of lesson.slides) {
         if (slide.id === slideId) {
-          return { 
-            type: slide.type, 
-            data: slide, 
-            moduleId: module.id, 
-            lessonId: lesson.id 
+          return {
+            type: slide.type,
+            data: slide,
+            moduleId: module.id,
+            lessonId: lesson.id,
           };
         }
       }
     }
-    
+
+    if (module.learningPathCheckpoint?.slideId === slideId) {
+      return { type: "learning-path", data: module.learningPathCheckpoint, moduleId: module.id };
+    }
+
     if (module.completion.slideId === slideId) {
       return { type: "completion", data: module.completion, moduleId: module.id };
     }
@@ -585,6 +603,7 @@ export function getModulesForDisplay(course: CourseStructure): Module[] {
     glossary: m.glossary.terms,
     objectives: [],
     completion: m.completion.content,
+    completionSlideId: m.completion.slideId,
   }));
 }
 

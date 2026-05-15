@@ -75,6 +75,7 @@ export interface Module {
   glossary: GlossaryTerm[];
   objectives: LearningObjective[];
   completion?: CompletionContent;
+  completionSlideId?: string;
 }
 
 export type ModuleStatus = "active" | "locked" | "completed";
@@ -129,12 +130,22 @@ export interface WeeklyFeature {
   title: string;
 }
 
+export interface LearningPathModuleItem {
+  id: string;
+  title: string;
+  thumbnail: string;
+  status: ModuleStatus;
+  isIntro?: boolean;
+  sectionLabel?: string;
+}
+
 export interface LearningPathContent {
   title: string;
   subtitle: string;
   description: string;
   audioCta?: AudioCta;
   preparationSection: PreparationSection;
+  moduleItems?: LearningPathModuleItem[];
 }
 
 export interface AudioCta {

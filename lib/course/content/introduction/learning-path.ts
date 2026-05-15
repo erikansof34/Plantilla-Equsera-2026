@@ -5,8 +5,8 @@ export const introductionLearningPath: CourseStructure["introduction"]["learning
   navbarTitle: "Ruta de Aprendizaje",
   content: {
     title: "Tu Ruta de aprendizaje !!",
-    subtitle: "Los módulos que irás tomando cada semana",
-    description: "Los 13 MÓDULOS, que irás tomando y aplicando cada semana, son:",
+    subtitle: "Modulos",
+    description: "Los 13 MÓDULOS, que irás tomando y aplicando, son:",
     audioCta: {
       label: "ESCUCHAR RECOMENDACIONES",
       icon: "volume",

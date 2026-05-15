@@ -1,7 +1,7 @@
 import type { SlideStructure } from "../../../../course-structure";
 
 export const zoneYellowSlide: SlideStructure = {
-  id: "m1-l4-s1",
+  id: "module-1-zone-yellow",
   type: "zone-detail",
   order: 1,
   content: {

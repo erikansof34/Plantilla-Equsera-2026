@@ -9,6 +9,8 @@ export const introductionCover: CourseStructure["introduction"]["cover"] = {
     "",
   ctaLabel: "COMENZAR",
   helperText: "HAZ CLIC EN 'COMENZAR' PARA INICIAR TU FORMACIÓN",
+  backgroundVideo: "/video/portada/portada_video.mp4",
+  videoOpacity: 0.4,
   copyrightText: "Copyright © 2026 por Equus Edu Pro, LLC",
   footerText: "Powered by Workage Institute",
   copyrightModalTitle: "TODOS LOS DERECHOS RESERVADOS",

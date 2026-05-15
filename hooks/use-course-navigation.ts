@@ -100,14 +100,22 @@ export function useCourseNavigation({
 
   // Navegar al siguiente
   const goToNext = useCallback(() => {
+    console.log("LLAMADA A goToNext - Slide actual:", currentSlideId);
     const nextId = getNextSlide(course, currentSlideId);
+    console.log("Resultado de getNextSlide:", nextId);
     
     if (nextId) {
+      console.log("Actualizando estado a:", nextId);
       // Marcar el actual como completado
-      setCompletedSlides(prev => new Set(prev).add(currentSlideId));
+      setCompletedSlides(prev => {
+        const nextSet = new Set(prev);
+        nextSet.add(currentSlideId);
+        return nextSet;
+      });
       setCurrentSlideId(nextId);
       onSlideChange?.(nextId);
     } else {
+      console.log("No hay siguiente slide, curso completado.");
       // Último slide - marcar como completado y notificar
       setCompletedSlides(prev => new Set(prev).add(currentSlideId));
       onCourseComplete?.();
@@ -117,7 +125,7 @@ export function useCourseNavigation({
   // Navegar al anterior
   const goBack = useCallback(() => {
     const prevId = getPreviousSlide(course, currentSlideId);
-    
+
     if (prevId) {
       setCurrentSlideId(prevId);
       onSlideChange?.(prevId);

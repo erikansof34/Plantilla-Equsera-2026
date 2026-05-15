@@ -11,6 +11,7 @@ import { AudioPlayer } from "../media/AudioPlayer";
 import { VideoPlayer } from "../media/VideoPlayer";
 import { ImageWithOverlay } from "../media/ImageWithOverlay";
 import { ZoneIndicator } from "../ui/ZoneIndicator";
+import { CourseTitle } from "../ui/Typography";
 import type { SlideContent, ZoneColor } from "@/lib/course/types";
 
 export interface ContentSlideProps {
@@ -67,9 +68,9 @@ export function ContentSlide({
 
         {/* Title */}
         {content.title && (
-          <h1 className="course-title-primary mb-4">
+          <CourseTitle className="mb-4 text-[#051B0F]">
             {content.title}
-          </h1>
+          </CourseTitle>
         )}
 
         {/* Subtitle */}

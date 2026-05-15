@@ -238,4 +238,3 @@ Regla clave: Figma define el sistema visual y la secuencia; el contenido final d
 - `npm run build` -> build
 - `npm run start` -> ejecutar build
 - `npm run lint` -> revisar calidad de codigo
-

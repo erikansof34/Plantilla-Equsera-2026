@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Lock, Volume2, Sparkles, Lightbulb } from "lucide-react";
+import { Lock, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CourseLayout } from "../layouts/CourseLayout";
 import { BackButton } from "../ui/BackButton";
@@ -19,11 +19,13 @@ export interface LearningPathScreenProps {
   content: LearningPathContent;
   /** Lista de módulos */
   modules: Module[];
+  /** Slides completados */
+  completedSlides: Set<string>;
   /** Título para el navbar */
   navbarTitle?: string;
   /** Callback al continuar */
   onContinue?: () => void;
-  /** Callback al seleccionar módulo */
+  /** Callback al seleccionar un item de ruta (slideId o moduleId) */
   onModuleSelect?: (moduleId: string) => void;
   /** Callback al escuchar audio */
   onListenAudio?: () => void;
@@ -38,13 +40,56 @@ export function LearningPathScreen({
   totalLessons,
   content,
   modules,
+  completedSlides,
   navbarTitle,
   onContinue,
   onModuleSelect,
-  onListenAudio,
   onBack,
   className,
 }: LearningPathScreenProps) {
+  const getModuleStatus = (module: Module, index: number): "active" | "locked" | "completed" => {
+    if (module.status === "completed") {
+      return "completed";
+    }
+
+    if (index === 0) {
+      return module.status === "locked" ? "locked" : "active";
+    }
+
+    const previousModule = modules[index - 1];
+    const prevCompletionId = previousModule.completionSlideId;
+    if (prevCompletionId && completedSlides.has(prevCompletionId)) {
+      return "active";
+    }
+
+    if (module.status === "active") {
+      return "locked";
+    }
+
+    return "locked";
+  };
+
+  const defaultModuleItems = [
+    {
+      id: "intro",
+      title: "Introducción",
+      thumbnail: modules[0]?.thumbnail ?? "",
+      status: "active" as const,
+      isIntro: true,
+      sectionLabel: "Introducción",
+    },
+    ...modules.map((m, index) => ({
+      id: m.id,
+      title: m.title,
+      thumbnail: m.thumbnail,
+      status: getModuleStatus(m, index),
+      isIntro: false,
+      sectionLabel: `Módulo ${String(m.number).padStart(2, "0")}`,
+    })),
+  ];
+
+  const moduleItems = content.moduleItems ?? defaultModuleItems;
+
   return (
     <CourseLayout
       headerProps={{
@@ -62,30 +107,32 @@ export function LearningPathScreen({
           <CourseTitle variant="highlight">
             {content.title}
           </CourseTitle>
-          <CourseParagraph className="mt-2">
+          <CourseParagraph className="mt-4">
             {content.description}
           </CourseParagraph>
         </div>
 
         {/* Modules List */}
         <div className="space-y-4 mb-6">
-          {modules.slice(0, 3).map((module) => (
-            <button
-              key={module.id}
-              onClick={() => module.status === "active" && onModuleSelect?.(module.id)}
-              disabled={module.status === "locked"}
-              className={cn(
-                "w-full flex items-center gap-4 p-4 rounded-[24px] border transition-all text-left",
-                module.status === "active"
-                  ? "border-l-4 border-l-[#765A02] border-[#E7E3DB] bg-white shadow-[0px_12px_20px_rgba(27,28,25,0.06)]"
-                  : "border-[#E7E3DB] bg-[#F5F3EE] opacity-60"
-              )}
-            >
+          {moduleItems.map((item, idx) => {
+            const sectionLabel = item.sectionLabel ?? (item.isIntro ? "Introducción" : `Módulo ${String(idx).padStart(2, "0")}`);
+            return (
+              <button
+                key={item.id}
+                onClick={() => item.status === "active" && onModuleSelect?.(item.id)}
+                disabled={item.status === "locked"}
+                className={cn(
+                  "w-full flex items-center gap-4 p-4 rounded-[24px] border transition-all text-left",
+                  item.status === "active"
+                    ? "border-l-4 border-l-[#765A02] border-[#E7E3DB] bg-white shadow-[0px_12px_20px_rgba(27,28,25,0.06)]"
+                    : "border-[#E7E3DB] bg-[#F5F3EE] opacity-60"
+                )}
+              >
               {/* Thumbnail */}
               <div className="relative h-20 w-20 rounded-lg overflow-hidden flex-shrink-0">
                 <Image
-                  src={module.thumbnail}
-                  alt={module.title}
+                  src={item.thumbnail}
+                  alt={item.title}
                   fill
                   className="object-cover"
                   sizes="64px"
@@ -95,24 +142,25 @@ export function LearningPathScreen({
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className={cn("text-[10px] font-bold uppercase tracking-[1px]", module.status === "active" ? "text-course-gold" : "text-course-text-muted")}>
-                    Módulo {String(module.number).padStart(2, "0")}
+                  <span className={cn("text-[10px] font-bold uppercase tracking-[1px]", item.status === "active" ? "text-course-gold" : "text-course-text-muted")}>
+                    {sectionLabel}
                   </span>
                   <span className="text-[10px] text-course-text-muted uppercase font-bold tracking-[1px]">
-                    • {module.status === "active" ? "Active" : "Locked"}
+                    • {item.status === "active" ? "Activo" : "Bloqueado"}
                   </span>
                 </div>
                 <CourseSubtitle bold className="text-course-text-primary text-[18px] leading-[1.25]">
-                  {module.title}
+                  {item.title}
                 </CourseSubtitle>
               </div>
 
               {/* Lock Icon */}
-              {module.status === "locked" && (
+              {item.status === "locked" && (
                 <Lock className="h-5 w-5 text-course-text-muted flex-shrink-0" />
               )}
             </button>
-          ))}
+          );
+        })}
         </div>
 
         {/* Info Card - Tip */}
@@ -124,7 +172,7 @@ export function LearningPathScreen({
             </div>
             <CourseParagraph className="text-[16px] text-[#576755] font-medium">
               Al finalizar cada tema podrás aplicar lo aprendido con una actividad de
-              refuerzo, y reto de la semana.
+              refuerzo.
             </CourseParagraph>
           </div>
         </div>

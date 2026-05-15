@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(Get-Content \"c:\\\\Users\\\\braya\\\\Desktop\\\\plantilla_equsera\\\\out\\\\index.html\" -TotalCount 40)",
+      "PowerShell(Set-Location \"c:\\\\Users\\\\braya\\\\Desktop\\\\plantilla_equsera\"; npm run build; Get-ChildItem \".\" -Name | Where-Object { $_ -eq \"out\" })"
+    ]
+  }
+}

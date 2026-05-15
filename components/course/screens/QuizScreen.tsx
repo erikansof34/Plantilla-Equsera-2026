@@ -7,6 +7,8 @@ import { BackButton } from "../ui/BackButton";
 import { ContinueButton } from "../ui/ContinueButton";
 import { ContentCard } from "../content/ContentCard";
 import { ImageMatching } from "../interactive/ImageMatching";
+import { CourseTitle } from "../ui/Typography";
+import { Horse } from "lucide-react";
 import type { ImageMatchingExercise, InfoCard } from "@/lib/course/types";
 
 export interface QuizScreenProps {
@@ -24,8 +26,10 @@ export interface QuizScreenProps {
   exercise: ImageMatchingExercise;
   /** Dato interesante al finalizar */
   interestingFact?: InfoCard;
-  /** Callback al completar */
+  /** Callback al confirmar respuestas */
   onComplete?: (results: Record<string, string>) => void;
+  /** Callback al continuar después de confirmar */
+  onContinue?: () => void;
   /** Callback al ir atrás */
   onBack?: () => void;
   /** Clase adicional */
@@ -41,6 +45,7 @@ export function QuizScreen({
   exercise,
   interestingFact,
   onComplete,
+  onContinue,
   onBack,
   className,
 }: QuizScreenProps) {
@@ -68,60 +73,68 @@ export function QuizScreen({
         variant: "activity",
         onBack,
       }}
+      footerActions={
+        <>
+          <BackButton onClick={onBack} className="min-w-[200px]" />
+          <ContinueButton onClick={onContinue} className="min-w-[240px]" />
+        </>
+      }
       className={className}
     >
-      <div className="px-6 py-4 bg-[#FBF9F4]">
-        {/* Badge & Title */}
-        <div className="mb-6">
-          <span className="text-xs font-bold uppercase tracking-[1.4px] text-course-gold">
-            {badge}
-          </span>
-          <h1 className="course-title-primary mt-1">
-            {moduleTitle}
-          </h1>
-        </div>
+      <div className="py-8 bg-[#FBF9F4] w-full">
+        {/* Vertical Layout (Single Column) */}
+        <div className="flex flex-col gap-8 lg:gap-12 max-w-3xl mx-auto">
+          
+          {/* Header Section */}
+          <div className="text-center">
+            <span className="text-xs lg:text-sm font-bold uppercase tracking-[2.5px] text-course-gold">
+              {badge}
+            </span>
+            <CourseTitle className="mt-3 text-3xl lg:text-5xl leading-tight text-[#051B0F]">
+              {moduleTitle}
+            </CourseTitle>
+          </div>
 
-        {/* Instructions */}
-        <ContentCard variant="cream" className="mb-6 rounded-[24px] border border-[#E7E3DB] bg-[#F5F3EE]">
-          <p className="text-[15px] text-course-text-primary leading-[1.65]">
-            {instructions}
-          </p>
-        </ContentCard>
-
-        {/* Image Matching Exercise */}
-        <ImageMatching
-          instructions={exercise.instructions}
-          items={exercise.items}
-          onComplete={handleMatchingComplete}
-          className="mb-6"
-        />
-
-        {/* Navigation Buttons */}
-        <div className="flex items-center gap-3 mb-6">
-          <BackButton onClick={onBack} fullWidth />
-          <ContinueButton
-            label="Confirmar respuestas"
-            variant="primary"
-            onClick={handleConfirm}
-            disabled={!allAnswered}
-            showArrow
-            fullWidth
-          />
-        </div>
-
-        {/* Interesting Fact (shown after completion) */}
-        {isComplete && interestingFact && (
-          <div className="mt-6">
-            <p className="text-xs font-bold uppercase tracking-[1.3px] text-course-gold mb-3">
-              Identificar datos interesantes
+          {/* Instructions */}
+          <ContentCard variant="cream" className="rounded-[28px] border border-[#E7E3DB] bg-[#F5F3EE] p-8 lg:p-10 shadow-sm">
+            <p className="text-base lg:text-lg text-course-text-primary leading-relaxed">
+              {instructions}
             </p>
-            <ContentCard variant="info" icon="info" className="rounded-[20px]">
-              <p className="text-[15px] text-course-text-primary leading-[1.6]">
-                {interestingFact.text}
+          </ContentCard>
+
+          {/* Quiz / Matching Exercise */}
+          <div className="w-full">
+            <ImageMatching
+              exercise={exercise}
+              onComplete={handleMatchingComplete}
+              className="[&_h3]:text-2xl lg:[&_h3]:text-3xl [&_.grid]:gap-4 lg:[&_.grid]:gap-6"
+            />
+          </div>
+
+          {/* Interesting Fact (after completion) */}
+          {isComplete && interestingFact && (
+            <ContentCard
+              variant={interestingFact.variant as any}
+              badge={interestingFact.badge}
+              className="rounded-[32px] p-8 lg:p-10 shadow-xl"
+            >
+              {interestingFact.title && (
+                <h4 className="font-bold text-course-text-primary mb-3 text-xl">
+                  {interestingFact.title}
+                </h4>
+              )}
+              <p className="text-lg lg:text-xl text-course-text-primary leading-relaxed italic">
+                "{interestingFact.text}"
               </p>
             </ContentCard>
-          </div>
-        )}
+          )}
+        </div>
+
+        {/* Mobile Navigation Buttons (Hidden on Web) */}
+        <div className="lg:hidden mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto px-6 pb-10">
+          <BackButton onClick={onBack} className="w-full sm:w-auto" />
+          <ContinueButton onClick={onContinue} className="w-full sm:w-auto" />
+        </div>
       </div>
     </CourseLayout>
   );

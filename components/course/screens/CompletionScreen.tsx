@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
-import { Check, Star } from "lucide-react";
+// import Image from "next/image";
+import { Check, Star, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BackButton } from "../ui/BackButton";
 import { ContinueButton } from "../ui/ContinueButton";
 import { Checklist } from "../interactive/Checklist";
 import { LearningObjectiveItem } from "../content/LearningObjectiveItem";
+import { CourseTitle } from "../ui/Typography";
 import type { CompletionContent, ChecklistItem, Achievement } from "@/lib/course/types";
 import { defaultNavItems, BottomNavigation, progressNavItems } from "../navigation/BottomNavigation";
 
@@ -67,6 +68,10 @@ export function CompletionScreen({
       <main className="flex-1 px-6 py-8 pb-24">
         {/* Celebration Image */}
         <div className="flex justify-center mb-6">
+          <div className="relative h-40 w-40 flex items-center justify-center">
+            <Trophy className="h-24 w-24 text-course-gold" />
+          </div>
+          {/*
           <div className="relative h-40 w-40">
             <Image
               src={content.celebrationImage}
@@ -75,6 +80,7 @@ export function CompletionScreen({
               className="object-contain"
             />
           </div>
+          */}
         </div>
 
         {/* Title */}
@@ -82,9 +88,9 @@ export function CompletionScreen({
           <h2 className="text-base font-bold text-course-gold uppercase tracking-[1.2px]">
             {content.badge}
           </h2>
-          <h1 className="course-title-primary mt-1">
+          <CourseTitle className="mt-1 text-[#051B0F]">
             {content.title}
-          </h1>
+          </CourseTitle>
           <p className="text-base text-course-text-secondary mt-2 leading-[1.55]">
             {content.subtitle}
           </p>
@@ -136,9 +142,11 @@ export function CompletionScreen({
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center gap-3">
-          <BackButton onClick={onClose} fullWidth />
-          <ContinueButton onClick={onContinue} fullWidth />
+        <div className="pb-2">
+          <div className="grid grid-cols-2 gap-3">
+            <BackButton onClick={onClose} fullWidth />
+            <ContinueButton onClick={onContinue} fullWidth />
+          </div>
         </div>
       </main>
 

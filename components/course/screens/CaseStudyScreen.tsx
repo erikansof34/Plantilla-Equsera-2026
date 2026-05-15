@@ -9,6 +9,7 @@ import { ContentCard } from "../content/ContentCard";
 import { AudioPlayer } from "../media/AudioPlayer";
 import { VideoPlayer } from "../media/VideoPlayer";
 import { MultipleChoice } from "../interactive/MultipleChoice";
+import { CourseTitle } from "../ui/Typography";
 import type { SlideContent } from "@/lib/course/types";
 
 export interface CaseStudyScreenProps {
@@ -79,9 +80,9 @@ export function CaseStudyScreen({
 
         {/* Title */}
         {content.title && (
-          <h1 className="mb-6 text-[54px] font-black leading-[1.04] tracking-[-0.8px] text-[#051B0F]">
+          <CourseTitle className="mb-6 text-[#051B0F]">
             {content.title}
-          </h1>
+          </CourseTitle>
         )}
 
         {/* Video Section */}

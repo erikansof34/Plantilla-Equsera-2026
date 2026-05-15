@@ -9,6 +9,7 @@ import { ZoneIndicator } from "../ui/ZoneIndicator";
 import { KeyComponentCard } from "../content/KeyComponentCard";
 import { ImageWithOverlay } from "../media/ImageWithOverlay";
 import { CitationCard } from "../content/CitationCard";
+import { CourseTitle, CourseParagraph } from "../ui/Typography";
 import type { SlideContent } from "@/lib/course/types";
 
 export interface ZoneIntroScreenProps {
@@ -60,16 +61,16 @@ export function ZoneIntroScreen({
       <div className="bg-[#FBF9F4] px-6 py-4">
         {/* Title */}
         {content.title && (
-          <h1 className="mb-3 text-[52px] font-black leading-[1.03] tracking-[-0.8px] text-[#051B0F]">
+          <CourseTitle className="mb-3 text-[#051B0F]">
             {content.title}
-          </h1>
+          </CourseTitle>
         )}
 
         {/* Subtitle */}
         {content.subtitle && (
-          <p className="mb-7 text-[24px] italic leading-[1.25] text-[#6C706E]">
+          <CourseParagraph className="mb-7 text-[24px] italic leading-[1.25] text-[#6C706E]">
             {content.subtitle}
-          </p>
+          </CourseParagraph>
         )}
 
         {/* Párrafo introductorio */}

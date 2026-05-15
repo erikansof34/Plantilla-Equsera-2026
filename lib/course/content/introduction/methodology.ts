@@ -4,9 +4,9 @@ export const introductionMethodology: CourseStructure["introduction"]["methodolo
   slideId: "intro-methodology",
   navbarTitle: "Metodología",
   content: {
-    badge: "CADA SEMANA RECIBIRÁS",
+    badge: "RECIBIRÁS",
     title: "METODOLOGÍA DEL CURSO",
-    subtitle: "Cómo sacarle el máximo provecho CADA SEMANA a este curso",
+    subtitle: "Cómo sacarle el máximo provecho a este curso",
     image: "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=800",
     editorialNote: {
       badge: "NOTA DEL EXPERTO",
@@ -17,9 +17,9 @@ export const introductionMethodology: CourseStructure["introduction"]["methodolo
       overlayText: "Haz clic para ver el vídeo",
     },
     weeklyFeatures: [
-      { id: "wf1", icon: "book", title: "Glosario y partes del caballo de la semana" },
+      { id: "wf1", icon: "book", title: "Glosario y partes del caballo" },
       { id: "wf2", icon: "graduation", title: "Contenido de aprendizaje" },
-      { id: "wf3", icon: "target", title: "Ejercicios prácticos y RETO de la semana" },
+      { id: "wf3", icon: "target", title: "Ejercicios prácticos" },
     ],
   },
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import type { CourseStructure, SlideStructure, LessonStructure } from "@/lib/course/course-structure";
-import { getSlideById, getSlidePosition, getModulesForDisplay } from "@/lib/course/course-structure";
+import { getSlideById, getSlidePosition, getModulesForDisplay, flattenSlides } from "@/lib/course/course-structure";
 import { CoverScreen } from "./screens/CoverScreen";
 import { WelcomeScreen } from "./screens/WelcomeScreen";
 import { MethodologyScreen } from "./screens/MethodologyScreen";
@@ -37,6 +37,7 @@ export interface SlideRendererProps {
   onGoToSlide?: (slideId: string) => void;
   /** Callback al completar actividad/quiz */
   onComplete?: () => void;
+  completedSlides: Set<string>;
 }
 
 export function SlideRenderer({
@@ -46,7 +47,9 @@ export function SlideRenderer({
   onBack,
   onGoToSlide,
   onComplete,
+  completedSlides,
 }: SlideRendererProps) {
+  console.log("SlideRenderer rendering slide:", currentSlideId);
   const slideInfo = getSlideById(course, currentSlideId);
   
   if (!slideInfo) {
@@ -67,6 +70,7 @@ export function SlideRenderer({
   const modules = getModulesForDisplay(course);
 
   switch (slideInfo.type) {
+    // INTRODUCCIÓN - PANTALLA 1: Portada
     case "cover": {
       const data = slideInfo.data as CoverSlideData;
       return (
@@ -77,7 +81,9 @@ export function SlideRenderer({
           titleLine2={data.titleLine2}
           subtitle={data.subtitle}
           features={course.meta.features}
-          backgroundImage={course.meta.coverImage}
+          backgroundImage={data.backgroundImage || course.meta.coverImage}
+          backgroundVideo={data.backgroundVideo}
+          videoOpacity={data.videoOpacity}
           ctaLabel={data.ctaLabel}
           helperText={data.helperText}
           footerText={data.footerText}
@@ -90,6 +96,86 @@ export function SlideRenderer({
       );
     }
 
+    // INTRODUCCIÓN - PANTALLA 2: Ruta de Aprendizaje (intro-learning-path)
+    case "learning-path": {
+      const data = slideInfo.data as LearningPathSlideData;
+
+      const handleModuleSelect = (selectedId: string) => {
+        if (!onGoToSlide) {
+          return;
+        }
+
+        if (selectedId === "intro") {
+          onGoToSlide(course.introduction.welcome.slideId);
+          return;
+        }
+
+        const normalizedModuleId = selectedId.replace(/^module-/, "modulo-");
+        const selectedModule = course.modules.find((module) => module.id === selectedId || module.id === normalizedModuleId);
+
+        if (selectedModule) {
+          if (selectedModule.learningPathCheckpoint) {
+            onGoToSlide(selectedModule.learningPathCheckpoint.slideId);
+            return;
+          }
+
+          const moduleStartSlide = flattenSlides(course).find(
+            (slide) => (slide.moduleId === selectedId || slide.moduleId === normalizedModuleId) && slide.lessonId
+          )?.id;
+          if (moduleStartSlide) {
+            onGoToSlide(moduleStartSlide);
+            return;
+          }
+
+          const firstSlideId = selectedModule.lessons?.[0]?.slides?.[0]?.id;
+          if (firstSlideId) {
+            onGoToSlide(firstSlideId);
+            return;
+          }
+        }
+
+        const directSlide = flattenSlides(course).find((slide) => slide.id === selectedId)?.id;
+        if (directSlide) {
+          onGoToSlide(directSlide);
+          return;
+        }
+
+        onGoToSlide(selectedId);
+      };
+
+      const handleLearningPathContinue = () => {
+        // Checkpoint de módulo → avanzar al siguiente slide normalmente
+        if (slideInfo.moduleId) {
+          onNext();
+          return;
+        }
+        // Ruta de aprendizaje intro → si ya completó el intro, ir al primer módulo pendiente
+        const introCompleted = completedSlides.has(course.introduction.methodology.slideId);
+        if (introCompleted) {
+          const nextModule = course.modules.find((m) => !completedSlides.has(m.completion.slideId));
+          if (nextModule) {
+            handleModuleSelect(nextModule.id);
+            return;
+          }
+        }
+        onNext();
+      };
+
+      return (
+        <LearningPathScreen
+          lessonNumber={position.lessonCurrent}
+          totalLessons={position.lessonTotal}
+          content={data.content}
+          modules={modules}
+          completedSlides={completedSlides}
+          onContinue={handleLearningPathContinue}
+          onBack={onBack}
+          onModuleSelect={handleModuleSelect}
+        />
+      );
+    }
+
+    // INTRODUCCIÓN - PANTALLA 3: Bienvenida
     case "welcome": {
       const data = slideInfo.data as WelcomeSlideData;
       return (
@@ -103,6 +189,7 @@ export function SlideRenderer({
       );
     }
 
+    // INTRODUCCIÓN - PANTALLA 4: Metodología
     case "methodology": {
       const data = slideInfo.data as MethodologySlideData;
       return (
@@ -116,20 +203,7 @@ export function SlideRenderer({
       );
     }
 
-    case "learning-path": {
-      const data = slideInfo.data as LearningPathSlideData;
-      return (
-        <LearningPathScreen
-          lessonNumber={position.lessonCurrent}
-          totalLessons={position.lessonTotal}
-          content={data.content}
-          modules={modules}
-          onContinue={onNext}
-          onBack={onBack}
-        />
-      );
-    }
-
+    // MÓDULOS - PANTALLA GLOSARIO
     case "glossary": {
       const data = slideInfo.data as GlossarySlideData;
       return (
@@ -150,26 +224,11 @@ export function SlideRenderer({
       );
     }
 
-    case "content":
-    case "zone-detail": {
+    // MÓDULO 1 - PANTALLA 1: Partes del Caballo (module-1-horse-parts)
+    case "horse-parts": {
       const data = slideInfo.data as SlideStructure;
       return (
-        <ContentSlide
-          lessonNumber={position.lessonCurrent}
-          totalLessons={position.lessonTotal}
-          zoneName={data.content.zoneName}
-          zoneColor={data.content.zoneColor}
-          content={data.content}
-          onContinue={onNext}
-          onBack={onBack}
-        />
-      );
-    }
-
-    case "case-study": {
-      const data = slideInfo.data as SlideStructure;
-      return (
-        <Module1CaseStudyScreen
+        <HorsePartsScreen
           lessonNumber={position.lessonCurrent}
           totalLessons={position.lessonTotal}
           progressPercentage={(position.current / position.total) * 100}
@@ -180,6 +239,7 @@ export function SlideRenderer({
       );
     }
 
+    // MÓDULO 1 - PANTALLA 2: Intro a Zonas (module-1-zone-intro)
     case "zone-intro": {
       const data = slideInfo.data as SlideStructure;
       const isModule1 = slideInfo.moduleId === "modulo-1";
@@ -192,7 +252,7 @@ export function SlideRenderer({
             content={data.content}
             onContinue={() => {
               if (onGoToSlide) {
-                onGoToSlide("m1-l6-s1");
+                onGoToSlide("module-1-case-study");
                 return;
               }
               onNext();
@@ -212,10 +272,28 @@ export function SlideRenderer({
       );
     }
 
-    case "horse-parts": {
+    // MÓDULO 1 - PANTALLA 3-5: Zonas Verde/Amarilla/Roja (module-1-zone-green/yellow/red)
+    case "content":
+    case "zone-detail": {
       const data = slideInfo.data as SlideStructure;
       return (
-        <HorsePartsScreen
+        <ContentSlide
+          lessonNumber={position.lessonCurrent}
+          totalLessons={position.lessonTotal}
+          zoneName={data.content.zoneName}
+          zoneColor={data.content.zoneColor}
+          content={data.content}
+          onContinue={onNext}
+          onBack={onBack}
+        />
+      );
+    }
+
+    // MÓDULO 1 - PANTALLA 6: Caso de Estudio (module-1-case-study)
+    case "case-study": {
+      const data = slideInfo.data as SlideStructure;
+      return (
+        <Module1CaseStudyScreen
           lessonNumber={position.lessonCurrent}
           totalLessons={position.lessonTotal}
           progressPercentage={(position.current / position.total) * 100}
@@ -226,6 +304,7 @@ export function SlideRenderer({
       );
     }
 
+    // MÓDULO 1 - PANTALLA 7: Actividad Práctica (module-1-activity)
     case "activity": {
       const data = slideInfo.data as SlideStructure;
       return (
@@ -244,6 +323,7 @@ export function SlideRenderer({
       );
     }
 
+    // MÓDULO 1 - PANTALLA 8: Evaluación/Quiz (module-1-quiz)
     case "quiz": {
       const data = slideInfo.data as SlideStructure;
       if (!data.content.imageMatching) {
@@ -260,19 +340,20 @@ export function SlideRenderer({
           interestingFact={data.content.imageMatching.interestingFact}
           onComplete={() => {
             onComplete?.();
-            onNext();
           }}
+          onContinue={onNext}
           onBack={onBack}
         />
       );
     }
 
+    // MÓDULOS - PANTALLA DE COMPLETACIÓN
     case "completion": {
       const data = slideInfo.data as CompletionSlideData;
       return (
         <CompletionScreen
           content={data.content}
-          onContinue={onNext}
+          onContinue={() => onGoToSlide?.(course.introduction.learningPath.slideId)}
           onClose={onBack}
         />
       );

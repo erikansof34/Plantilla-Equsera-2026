@@ -31,11 +31,11 @@ const exampleData = {
     titleLine2: "EQUITACIÓN",
     subtitle: "APRENDE A MONTAR Y CUIDAR CABALLOS DESDE CERO",
     features: [
-      { id: "feature-1", icon: "clock", label: "8 SEMANAS DE FORMACIÓN" },
+      { id: "feature-1", icon: "clock", label: "TIEMPO DE FORMACIÓN" },
       { id: "feature-2", icon: "graduation", label: "CERTIFICACIÓN OFICIAL" },
       { id: "feature-3", icon: "interactive", label: "PRÁCTICA INTENSIVA" },
     ],
-    backgroundImage: "/images/cover-background.jpg",
+    backgroundImage: "/placeholder.jpg",
     ctaLabel: "COMENZAR",
     helperText: "CURSO 100% ONLINE",
   },
@@ -43,7 +43,7 @@ const exampleData = {
   welcome: {
     title: "Bienvenido al Curso",
     courseTitle: "Equitación Fundamental",
-    heroImage: "/images/welcome-hero.jpg",
+    heroImage: "/placeholder.jpg",
     paragraphs: [
       { id: "welcome-p1", text: "Este curso te guiará paso a paso en el fascinante mundo de la equitación." },
       { id: "welcome-p2", text: "Nuestro método práctico combina teoría con ejercicios hands-on." },
@@ -52,7 +52,7 @@ const exampleData = {
       {
         id: "welcome-a1",
         label: "Introducción al curso",
-        src: "/audio/intro.mp3",
+        src: "/audio/sld_bievenidos_nos_alegra.mp3",
         duration: "02:45",
       },
     ],
@@ -62,7 +62,7 @@ const exampleData = {
     badge: "METODOLOGÍA",
     title: "Nuestro Enfoque",
     subtitle: "Aprendizaje progresivo y seguro",
-    image: "/images/methodology.jpg",
+    image: "/placeholder.jpg",
     editorialNote: {
       badge: "IMPORTANTE",
       text: "Cada lección está diseñada para construir sobre la anterior.",
@@ -149,7 +149,7 @@ const exampleData = {
   glossary: {
     title: "Glosario Equitación",
     subtitle: "Términos esenciales",
-    glossaryImage: "/images/glossary.jpg",
+    glossaryImage: "/placeholder.jpg",
     imageCaption: "Conceptos fundamentales",
     helperText: "Consulta estos términos cuando los encuentres en las lecciones",
     quote: "El conocimiento del vocabulario es el primer paso hacia el dominio.",
@@ -180,13 +180,13 @@ const exampleData = {
     imageCarousel: [
       {
         id: "hp-i1",
-        src: "/images/horse-parts-1.jpg",
+        src: "/placeholder.jpg",
         label: "Anatomía externa",
         alt: "Partes externas del caballo",
       },
       {
         id: "hp-i2",
-        src: "/images/horse-parts-2.jpg",
+        src: "/placeholder.jpg",
         label: "Patas y cascos",
         alt: "Extremidades del caballo",
       },
@@ -235,7 +235,7 @@ const exampleData = {
         {
           id: "zd-i1",
           type: "image",
-          src: "/images/zone-green.jpg",
+          src: "/placeholder.jpg",
           overlay: {
             text: "Zona de contacto seguro",
             position: "bottom",
@@ -261,123 +261,86 @@ const exampleData = {
         {
           id: "zy-i1",
           type: "image",
-          src: "/images/zone-yellow.jpg",
-          labels: [
-            {
-              id: "zy-l1",
-              text: "Área sensible",
-              position: { x: 25, y: 35 },
-              color: "yellow",
-            },
-          ],
-        },
-      ],
-      infoCards: [
-        { id: "zy-card-1", title: "Precaución", text: "Requiere supervisión constante", variant: "yellow" },
-      ],
-    },
-    {
-      title: "Zona Roja - Alto Riesgo",
-      zoneName: "Zona Riesgo",
-      zoneColor: "red" as ZoneColor,
-      paragraphs: [
-        { id: "zr-p1", text: "Esta zona es de alto riesgo y solo para expertos." },
-      ],
-      media: [
-        {
-          id: "zr-i1",
-          type: "image",
-          src: "/images/zone-red.jpg",
+          src: "/placeholder.jpg",
           overlay: {
-            badge: "PELIGRO",
-            badgeColor: "red",
-            position: "top",
-            text: "Zona de alto riesgo",
+            text: "Cuidado al acercarse",
+            position: "bottom",
           },
         },
       ],
       infoCards: [
         {
-          id: "zr-card-1",
-          title: "Riesgo",
-          text: "Solo para personal experimentado",
-          variant: "red",
+          id: "zd-card-2",
+          text: "En esta zona, el caballo puede no verte claramente. Siempre habla antes de entrar.",
+          variant: "warning",
+        },
+      ],
+    },
+    {
+      title: "Zona Roja - Peligro",
+      zoneName: "Zona de Riesgo",
+      zoneColor: "red" as ZoneColor,
+      paragraphs: [
+        { id: "zr-p1", text: "Evita permanecer en esta zona sin supervisión." },
+      ],
+      media: [
+        {
+          id: "zd-i3",
+          type: "image",
+          src: "/placeholder.jpg",
+          overlay: {
+            text: "Zona de alto riesgo",
+            position: "bottom",
+          },
+        },
+      ],
+      infoCards: [
+        {
+          id: "zd-card-3",
+          text: "Peligro de coces. Nunca te sitúes directamente detrás del caballo.",
+          variant: "error",
         },
       ],
     },
   ] as SlideContent[],
 
   caseStudy: {
-    title: "Estudio de Caso: Manejo Seguro",
-    paragraphs: [
-      { id: "cs-p1", text: "Analizaremos un caso práctico de manejo seguro." },
-    ],
+    title: "Caso de Estudio: El establo",
+    subtitle: "Analiza la situación y decide",
+    image: "/placeholder.jpg",
+    description: "Un caballo se muestra inquieto al entrar en su box. ¿Qué harías?",
     media: [
-      { id: "case-v1", type: "video", src: "/videos/case-study.mp4", thumbnail: "/images/case-thumb.jpg" },
-    ],
-    quotes: [
-      {
-        id: "case-quote-1",
-        text: "El manejo adecuado previene accidentes y fortalece el vínculo.",
-        variant: "default",
-      },
-    ],
-    questions: [
-      {
-        id: "case-q1",
-        type: "multiple-choice",
-        question: "¿Cuál es la zona más segura para acercarse a un caballo desconocido?",
-        options: [
-          { id: "case-a", label: "A", text: "Frente a la cabeza" },
-          { id: "case-b", label: "B", text: "Lateral del cuello" },
-        ],
-        correctAnswer: "case-b",
-      },
+      { id: "case-v1", type: "video", src: "/video/portada/portada_video.mp4", thumbnail: "/placeholder.jpg" },
     ],
   } as SlideContent,
 
   activity: {
-    questions: [
-      {
-        id: "activity-q1",
-        type: "multiple-choice",
-        question: "Identifica la zona correcta para el primer contacto",
-        options: [
-          { id: "act-a", label: "A", text: "Zona verde" },
-          { id: "act-b", label: "B", text: "Zona roja" },
-        ],
-        correctAnswer: "act-a",
-      },
-    ],
+    title: "Actividad de Refuerzo",
+    description: "Arrastra las zonas a su lugar correspondiente en el caballo.",
   } as SlideContent,
 
   quiz: {
-    imageMatching: {
-      id: "quiz-1",
-      instructions: "Relaciona cada imagen con su zona correcta",
-      items: [
-        {
-          id: "quiz-item-1",
-          image: "/images/quiz-1.jpg",
-          label: "Imagen 1",
-          options: ["Zona verde", "Zona amarilla", "Zona roja"],
-          correctAnswer: "Zona verde",
-        },
-      ],
-      interestingFact: {
-        id: "quiz-fact-1",
-        text: "Los caballos pueden reconocer hasta 10 zonas diferentes de contacto humano",
-        variant: "default",
+    title: "Evaluación Final",
+    description: "Demuestra lo aprendido en este módulo.",
+    questions: [
+      {
+        id: "q1",
+        question: "¿Cuál es la zona más segura?",
+        options: [
+          { id: "o1", label: "Verde", isCorrect: true },
+          { id: "o2", label: "Roja", isCorrect: false },
+        ],
+        image: "/placeholder.jpg",
       },
-    },
+    ],
   } as SlideContent,
 
   completion: {
     moduleNumber: 1,
     badge: "¡COMPLETADO!",
-    title: "Felicidades",
-    subtitle: "Has completado el Módulo 1",
-    celebrationImage: "https://images.unsplash.com/photo-1571019613454-1cbecf99b9e8?w=400&h=300&fit=crop",
+    title: "¡Módulo Completado!",
+    subtitle: "Has dominado las zonas de seguridad",
+    celebrationImage: "/placeholder.jpg",
     achievements: [
       { id: "achievement-1", text: "Anatomía básica dominada", completed: true },
       { id: "achievement-2", text: "Zonas de seguridad identificadas", completed: true },
@@ -472,6 +435,7 @@ export function FigmaPresentation({ className }: FigmaPresentationProps) {
             totalLessons={totalScreens}
             content={exampleData.learningPath}
             modules={exampleData.modules}
+            completedSlides={new Set()}
             navbarTitle={introductionLearningPath.navbarTitle}
             onContinue={handleNext}
             onBack={handlePrevious}

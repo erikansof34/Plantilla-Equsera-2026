@@ -9,6 +9,7 @@ import { ContentCard } from "../content/ContentCard";
 import { ImageWithOverlay } from "../media/ImageWithOverlay";
 import { MultipleChoice } from "../interactive/MultipleChoice";
 import { ScenarioQuestion } from "../interactive/ScenarioQuestion";
+import { CourseTitle } from "../ui/Typography";
 import type { Question, Scenario, ZoneColor } from "@/lib/course/types";
 
 export interface ActivityScreenProps {
@@ -83,7 +84,7 @@ export function ActivityScreen({
       <div className="px-6 py-4 bg-[#FBF9F4]">
         {/* Title */}
         <div className="mb-6">
-          <h1 className="course-title-primary">{title}</h1>
+          <CourseTitle className="text-[#051B0F]">{title}</CourseTitle>
           <p className="course-subtitle-text mt-2">{subtitle}</p>
         </div>
 
@@ -142,15 +143,17 @@ export function ActivityScreen({
         )}
 
         {/* Navigation Buttons */}
-        <div className="flex items-center gap-3">
-          <BackButton onClick={onBack} fullWidth />
-          <ContinueButton
-            label={isComplete ? "Finalizar" : "Continuar"}
-            variant={isComplete ? "finish" : "primary"}
-            onClick={handleNext}
-            showArrow
-            fullWidth
-          />
+        <div className="pb-2">
+          <div className="grid grid-cols-2 gap-3">
+            <BackButton onClick={onBack} fullWidth />
+            <ContinueButton
+              label={isComplete ? "Finalizar" : "Continuar"}
+              variant={isComplete ? "finish" : "primary"}
+              onClick={handleNext}
+              showArrow
+              fullWidth
+            />
+          </div>
         </div>
       </div>
     </CourseLayout>

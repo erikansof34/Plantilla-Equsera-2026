@@ -2,6 +2,7 @@ import type { ModuleStructure } from "../../../course-structure";
 import { module1Glossary } from "../../glossary";
 import { module1Lessons } from "./lessons";
 import { module1Completion } from "../../evaluation";
+import { module1LearningPathCheckpoint } from "./learning-path-checkpoint";
 
 export const module1: ModuleStructure = {
   id: "modulo-1",
@@ -14,5 +15,6 @@ export const module1: ModuleStructure = {
   glossary: module1Glossary,
   lessons: module1Lessons,
   completion: module1Completion,
+  learningPathCheckpoint: module1LearningPathCheckpoint,
 };
 

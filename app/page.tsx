@@ -5,7 +5,7 @@ import { useCourseNavigation } from "@/hooks/use-course-navigation";
 import { structuredCourse } from "@/lib/course/content/course";
 
 export default function DemoPage() {
-  const { currentSlideId, goToNext, goBack, goToSlide, reset } = useCourseNavigation({
+  const { currentSlideId, goToNext, goBack, goToSlide, reset, completedSlides } = useCourseNavigation({
     course: structuredCourse,
     initialSlideId: "intro-cover",
     onCourseComplete: () => reset(),
@@ -18,6 +18,7 @@ export default function DemoPage() {
       onNext={goToNext}
       onBack={goBack}
       onGoToSlide={goToSlide}
+      completedSlides={completedSlides}
     />
   );
 }
