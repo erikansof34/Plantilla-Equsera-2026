@@ -1,240 +1,114 @@
-# Integracion de Slides y Componentes Reutilizables
+# 🎓 Plantilla de Cursos Interactivos - Equsera
 
-Guia practica para esta plantilla de cursos interactivos con `Next.js + React + Tailwind + TypeScript`.
-
-## Objetivo de este README
-
-Este documento explica especificamente:
-
-1. Como integrar un **slide dentro de una leccion**.
-2. Como usar los **componentes reutilizables** sin rehacer estructura visual.
+Bienvenido a la **Plantilla de Cursos Interactivos**, un sistema LMS (Learning Management System) moderno y modular diseñado para ofrecer experiencias de aprendizaje inmersivas. Esta plantilla utiliza tecnologías de vanguardia como **Next.js 15, React 19, Tailwind CSS y TypeScript**.
 
 ---
 
-## Arquitectura base
+## 🌟 Propósito de la Plantilla
 
-La plantilla sigue esta jerarquia de datos:
+Esta herramienta permite a diseñadores instruccionales y desarrolladores crear cursos digitales con una estructura coherente, navegación fluida y elementos interactivos avanzados sin tener que programar la lógica base desde cero. 
 
-- `CourseStructure`
-  - `modules[]`
-    - `lessons[]`
-      - `slides[]`
-
-Archivos clave:
-
-- Tipos de datos: `lib/course/types.ts`
-- Helpers y navegacion de estructura: `lib/course/course-structure.ts`
-- Render por tipo de slide: `components/course/SlideRenderer.tsx`
-- Hook de navegacion: `hooks/use-course-navigation.ts`
-- Export centralizada de componentes: `components/course/index.ts`
+El enfoque principal es la **separación de datos y diseño**: el contenido del curso reside en archivos de configuración simples, mientras que la plantilla se encarga de renderizarlo con una identidad visual profesional.
 
 ---
 
-## Paso a paso: integrar un slide en una leccion
+## 🎨 Identidad de Marca
 
-### 1) Definir la leccion y su arreglo `slides`
+La plantilla cuenta con una identidad visual robusta basada en una paleta de colores sofisticada y una tipografía clara, diseñada para maximizar la legibilidad y el enfoque del estudiante.
 
-En tu objeto de curso (por ejemplo en `lib/course/example-course.ts` o `lib/course/example-data.ts`) agrega slides dentro de una leccion:
+### Paleta de Colores Corporativa
+- **Verde Oscuro (`--course-green-dark`)**: `#1a3a2f` - Usado para elementos de navegación y fondos principales.
+- **Verde Menta (`--course-green-mint`)**: `#7cb342` - Color de acento y éxito.
+- **Dorado (`--course-gold`)**: `#c9a227` - Usado para resaltados, medallas y elementos de progreso.
+- **Crema/Beige (`--course-cream`, `--course-beige`)**: `#f5f1e8` / `#e8e0d0` - Fondos suaves para tarjetas y áreas de contenido.
+
+### Tipografía
+- **Fuente Principal**: Inter (Sanson-serif moderna)
+- **Estilos**: Se utilizan jerarquías claras con pesos `900` para títulos y `400/600` para cuerpo de texto.
+
+---
+
+## 🧩 Componentes Reutilizables
+
+La plantilla ofrece una biblioteca de componentes centralizada en `components/course/index.ts`. Estos se dividen en categorías funcionales:
+
+### 1. Navegación y Layout
+- **CourseLayout**: Contenedor principal que gestiona el header, footer y área de contenido.
+- **CourseHeader**: Barra superior con lección actual, progreso y nombre de zona.
+- **BottomNavigation**: Menú inferior para acceso rápido a secciones globales.
+
+### 2. Elementos de Contenido
+- **ContentCard**: Tarjetas versátiles para texto (variantes: `cream`, `highlight`, `card`).
+- **QuoteCard / CitationCard**: Para resaltar citas importantes o notas editoriales.
+- **ExpandableText**: Para manejar textos largos sin saturar la pantalla.
+- **GlossaryTermCard**: Tarjetas específicas para definiciones de glosario.
+
+### 3. Media Interactiva
+- **AudioPlayer / VideoPlayer**: Reproductores personalizados con controles integrados.
+- **ImageCarousel**: Carrusel de imágenes para galerías.
+- **ImageWithOverlay**: Imágenes con capas de información superpuestas.
+
+### 4. Actividades y Evaluación
+- **MultipleChoice**: Preguntas de opción múltiple con feedback inmediato.
+- **ImageMatching**: Ejercicios de emparejamiento visual (drag & drop o select).
+- **Checklist**: Listas de verificación interactivas.
+- **ScenarioQuestion**: Preguntas basadas en casos de estudio.
+
+---
+
+## 📝 Cómo Anexar Contenido
+
+El contenido del curso es totalmente parametrizado. No necesitas editar los archivos de los componentes para cambiar el contenido.
+
+### Estructura de Datos
+Todo el contenido se gestiona en la carpeta `lib/course/content/`. El archivo raíz es `course.ts`, que consolida:
+1.  **Meta (`meta.ts`)**: Logo, nombre de empresa, features globales.
+2.  **Introducción (`introduction/`)**: Portada, bienvenida, metodología y ruta de aprendizaje.
+3.  **Módulos (`modules/`)**: Cada módulo tiene sus lecciones y cada lección sus slides.
+
+### Ejemplo: Añadir un nuevo Slide de Contenido
+Para añadir contenido a una lección, simplemente agrégalo al arreglo `slides` en el archivo correspondiente:
 
 ```ts
-import {
-  createContentSlide,
-  createActivitySlide,
-  createQuizSlide,
-} from "@/lib/course/course-structure";
-
-const lesson1Slides = [
-  createContentSlide("m1-l1-s1", 1, {
-    topLabel: "MODULO 1",
-    title: "Partes del caballo",
-    paragraphs: [
-      { id: "p1", text: "Contenido parametrizado del slide." },
-      { id: "p2", text: "Puedes editar texto sin tocar componentes." },
-    ],
-    media: [
-      {
-        id: "img-1",
-        type: "image",
-        src: "/media/caballo/partes.jpg",
-        caption: "Anatomia basica",
-      },
-    ],
-  }),
-  createActivitySlide("m1-l1-s2", 2, [
-    {
-      id: "q1",
-      type: "multiple-choice",
-      question: "¿Cual es la zona mas segura?",
-      options: [
-        { id: "a", label: "A", text: "Zona verde" },
-        { id: "b", label: "B", text: "Zona roja" },
-      ],
-      correctAnswer: "a",
-    },
-  ]),
-  createQuizSlide("m1-l1-s3", 3, {
-    id: "quiz-zonas",
-    instructions: "Relaciona cada imagen con su zona correcta.",
-    items: [
-      {
-        id: "item-1",
-        image: "/media/zonas/zona-1.jpg",
-        label: "Imagen 1",
-        options: ["Verde", "Amarilla", "Roja"],
-        correctAnswer: "Verde",
-      },
-    ],
-  }),
-];
+// lib/course/content/modules/module-1/slides/mi-nuevo-slide.ts
+export const miSlide = createContentSlide("slide-id-unico", 1, {
+  title: "Mi Título",
+  paragraphs: [
+    { id: "p1", text: "Este es mi nuevo contenido." }
+  ],
+  media: [
+    { id: "m1", type: "image", src: "/img/mi-imagen.jpg" }
+  ]
+});
 ```
 
-### 2) Insertar esos slides en la leccion
-
-```ts
-const lesson1 = {
-  id: "m1-l1",
-  number: 1,
-  title: "Leccion 1",
-  slides: lesson1Slides,
-};
-```
-
-Luego la leccion se agrega a `module.lessons`.
-
-### 2.1) Alinear la leccion con la secuencia de plantilla
-
-Ahora tienes una secuencia canónica en `lib/course/course-structure.ts`:
-
-- `DEFAULT_TEMPLATE_SEQUENCE`
-- `validateTemplateSequence(course)`
-
-Esto permite validar que el curso conserve la estructura base (portada, bienvenida, metodologia, ruta, glosario, contenido, actividad, evaluacion, completacion), sin casarte con un curso específico.
-
-Ejemplo:
-
-```ts
-import { validateTemplateSequence } from "@/lib/course/course-structure";
-
-const validation = validateTemplateSequence(course);
-
-if (!validation.ok) {
-  console.warn("Faltan slides requeridos:", validation.missingRequired);
-}
-```
-
-### 3) Verificar que el `type` exista en el renderer
-
-`SlideRenderer` renderiza por `slide.type`.  
-Si usas tipos existentes (`content`, `activity`, `quiz`, etc.), no debes cambiar nada.
-
-Si creas un tipo nuevo:
-
-1. Agregalo en `SlideType` dentro de `lib/course/types.ts`.
-2. Agrega su `case` en `components/course/SlideRenderer.tsx`.
-3. Crea o conecta su pantalla en `components/course/screens/`.
-
-### 4) Navegar entre slides
-
-`use-course-navigation` ya resuelve:
-
-- siguiente/anterior (`goToNext`, `goBack`)
-- progreso (`progressPercentage`)
-- slide actual (`currentSlideId`)
-
-Uso tipico:
-
-```tsx
-const {
-  currentSlideId,
-  goToNext,
-  goBack,
-  progressPercentage,
-} = useCourseNavigation({ course });
-```
+Luego, asegúrate de importar este slide en la lección correspondiente dentro de `lessons.ts`.
 
 ---
 
-## Como usar componentes reutilizables
+## 🚀 Instalación y Desarrollo
 
-Todos los componentes del curso salen desde:
-
-`components/course/index.ts`
-
-### Import recomendado
-
-```tsx
-import {
-  ContentCard,
-  AudioPlayer,
-  VideoPlayer,
-  ImageWithOverlay,
-  ContinueButton,
-  MultipleChoice,
-} from "@/components/course";
-```
-
-### Ejemplo real en un bloque de slide
-
-```tsx
-export function BloqueDeSlide() {
-  return (
-    <section className="space-y-4">
-      <ContentCard variant="cream">
-        <p className="text-sm leading-relaxed">
-          Este texto viene de la data del curso.
-        </p>
-      </ContentCard>
-
-      <AudioPlayer
-        src="/audio/leccion-1-intro.mp3"
-        duration="01:30"
-        variant="card"
-        label="Complemento de audio"
-      />
-
-      <ContinueButton onClick={() => console.log("Continuar")} />
-    </section>
-  );
-}
-```
-
-### Componentes por categoria
-
-- `content/`: `ContentCard`, `QuoteCard`, `ExpandableText`, `KeyComponentCard`
-- `media/`: `AudioPlayer`, `VideoPlayer`, `ImageWithOverlay`, `ImageCarousel`
-- `interactive/`: `MultipleChoice`, `ImageMatching`, `ScenarioQuestion`, `Checklist`, `GlossarySearch`
-- `ui/`: `ContinueButton`, `FeatureBadge`, `ZoneIndicator`
-- `screens/`: pantallas completas (`WelcomeScreen`, `GlossaryScreen`, etc.)
+1.  **Instalar dependencias**:
+    ```bash
+    npm install
+    ```
+2.  **Iniciar entorno de desarrollo**:
+    ```bash
+    npm run dev
+    ```
+3.  **Construir para producción**:
+    ```bash
+    npm run build
+    ```
 
 ---
 
-## Integracion con Figma (flujo recomendado)
+## 🛠️ Flujo de Trabajo Recomendado
 
-Para mantener esta base como **plantilla**, el flujo recomendado desde Figma es:
-
-1. Definir en Figma la identidad de marca (logo, paleta, estilos tipográficos, espaciados).
-2. Mapear cada frame a un `slide.type` de la plantilla.
-3. Llevar contenido a data (`lib/course/*`) y no a componentes.
-4. Reutilizar componentes de `content/`, `media/`, `interactive/`, `ui/`.
-5. Validar estructura con `validateTemplateSequence`.
-
-Regla clave: Figma define el sistema visual y la secuencia; el contenido final de cada curso se inyecta por datos.
+1.  **Diseño en Figma**: Definir la secuencia de pantallas y el estilo visual.
+2.  **Mapeo**: Identificar qué `SlideType` (cover, welcome, content, activity, quiz) corresponde a cada pantalla de Figma.
+3.  **Carga de Datos**: Traducir los textos y recursos de Figma a los archivos en `lib/course/content/`.
+4.  **Validación**: Usar `validateTemplateSequence(course)` para asegurar que se cumplen los requisitos mínimos del curso.
 
 ---
-
-## Buenas practicas para no romper escalabilidad
-
-- Mantener textos, media y actividades en `lib/course/*` (no hardcodear en pantallas).
-- Reutilizar componentes existentes antes de crear uno nuevo.
-- Respetar `id` unicos por modulo/leccion/slide.
-- Pasar `src` validos en media (`AudioPlayer` ya protege `src` vacio, pero evita dejar placeholders en produccion).
-- Si agregas una variante visual, documentarla en props del componente.
-
----
-
-## Scripts utiles
-
-- `npm run dev` -> desarrollo
-- `npm run build` -> build
-- `npm run start` -> ejecutar build
-- `npm run lint` -> revisar calidad de codigo
+*Desarrollado para la excelencia educativa por Equus Edu Pro, LLC.*
