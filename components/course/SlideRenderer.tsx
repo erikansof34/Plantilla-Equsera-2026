@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import type { CourseStructure, SlideStructure, LessonStructure } from "@/lib/course/course-structure";
 import { getSlideById, getSlidePosition, getModulesForDisplay, flattenSlides } from "@/lib/course/course-structure";
 import { CoverScreen } from "./screens/CoverScreen";

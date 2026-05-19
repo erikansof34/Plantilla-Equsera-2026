@@ -1,15 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Globe, Accessibility } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { useCallback, useState, useEffect } from "react";
+import { Globe, Accessibility, X as CloseIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Feature } from "@/lib/course/types";
 
@@ -78,14 +71,19 @@ export function CoverScreen({
   showAccessibility = true,
   className,
 }: CoverScreenProps) {
-  const handleStart = () => {
-    console.log("CTA: Botón Comenzar clickeado");
-    if (onStart) {
-      onStart();
-    } else {
-      console.warn("onStart callback no definido");
-    }
-  };
+  const [isCopyrightModalOpen, setCopyrightModalOpen] = useState(false);
+
+  useEffect(() => {
+    console.log("CoverScreen MONTADO - JavaScript funcionando");
+    const handleGlobalClick = () => console.log("CLICK GLOBAL DETECTADO EN WINDOW");
+    window.addEventListener("click", handleGlobalClick);
+    return () => window.removeEventListener("click", handleGlobalClick);
+  }, []);
+
+  const handleStart = useCallback(() => {
+    console.log("Botón COMENZAR clickeado");
+    onStart?.();
+  }, [onStart]);
 
   const handleLanguageClick = () => {
     console.log("Selector de idioma clickeado");
@@ -95,6 +93,15 @@ export function CoverScreen({
     console.log("Botón de accesibilidad clickeado");
   };
 
+  const openCopyrightModal = useCallback(() => {
+    console.log("Abriendo modal de copyright");
+    setCopyrightModalOpen(true);
+  }, []);
+
+  const closeCopyrightModal = useCallback(() => {
+    setCopyrightModalOpen(false);
+  }, []);
+
   return (
     <div
       className={cn(
@@ -102,44 +109,7 @@ export function CoverScreen({
         className
       )}
     >
-      {/* 1. Background Layers - BOTTOM LAYER */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* Fallback Color */}
-        <div className="absolute inset-0 bg-[#101411]" />
-
-        {/* Background Image */}
-        {backgroundImage && (
-          <div className="absolute inset-0">
-            <Image
-              src={backgroundImage}
-              alt=""
-              fill
-              className="object-cover scale-[1.06]"
-              priority
-            />
-          </div>
-        )}
-
-        {/* Background Video */}
-        {backgroundVideo && (
-          <div className="absolute inset-0">
-            <video
-              src={backgroundVideo}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover scale-[1.06]"
-              style={{ opacity: videoOpacity }}
-            />
-          </div>
-        )}
-
-        {/* Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#101411]/60 via-transparent to-[#101411]/90" />
-      </div>
-
-      {/* 2. Content Layer - TOP LAYER */}
+      {/* 1. Content Layer - TOP LAYER */}
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         {/* Header */}
         <header className="flex items-center justify-between px-8 pt-6 pb-6 bg-[#101411]/70 backdrop-blur-md border-b border-white/10">
@@ -155,13 +125,14 @@ export function CoverScreen({
           <div className="flex items-center gap-3">
             {showLanguageSelector && (
               <button
+                type="button"
                 onClick={handleLanguageClick}
                 className="flex items-center gap-2 text-[#E7C267] hover:text-[#F3D98D] text-xl font-bold cursor-pointer transition-colors"
               >
                 <span className="text-sm">ES</span>
                 <Globe className="h-[18px] w-[18px] text-[#A8D1A3]" />
               </button>
-            )}
+            )} 
           </div>
         </header>
 
@@ -208,6 +179,7 @@ export function CoverScreen({
           {/* CTA Button */}
           <div className="mb-4">
             <button
+              type="button"
               onClick={handleStart}
               className="w-full h-16 rounded-full border-2 border-[#BCE7B8]/30 bg-[#A8D1A3] text-[#143817] font-black text-[18px] tracking-[-0.3px] flex items-center justify-center gap-3 shadow-[0_10px_40px_rgba(168,238,190,0.25)] cursor-pointer hover:bg-[#b8eeb3] active:scale-[0.98] transition-all"
             >
@@ -226,36 +198,13 @@ export function CoverScreen({
           {/* Copyright */}
           {copyrightText && (
             <div className="mt-3">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <button
-                    type="button"
-                    className="mx-auto block text-center text-[0.75rem] text-white font-bold underline underline-offset-4 decoration-current decoration-1 transition hover:text-[#F3D98D] cursor-pointer"
-                  >
-                    {copyrightText}
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="bg-[#0f1611] border border-white/10 text-white shadow-[0_25px_80px_rgba(0,0,0,0.8)] p-6 rounded-[32px] max-w-[90vw] sm:max-w-[520px]">
-                  <DialogHeader>
-                    <DialogTitle className="text-sm uppercase tracking-[2px] text-course-gold font-bold text-center">
-                      {copyrightModalTitle ?? "TODOS LOS DERECHOS RESERVADOS"}
-                    </DialogTitle>
-                    <div className="mx-auto mt-4 mb-4 h-[1px] w-24 bg-[#6d683e]" />
-                  </DialogHeader>
-                  <DialogDescription className="text-sm leading-7 text-white/80">
-                    {copyrightModalDescription ??
-                      "Ninguna parte de este material puede reproducirse por ningún medio, incluyendo impresión, fotocopiado, grabación de audio o video, o cualquier sistema de almacenamiento o recuperación de información, sin permiso por escrito del titular de los derechos de autor."}
-                  </DialogDescription>
-                  <a
-                    href="https://workage.us/blog"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-5 inline-block text-course-gold font-bold underline underline-offset-4 decoration-current decoration-1 transition hover:text-[#F3D98D] cursor-pointer"
-                  >
-                    {copyrightModalFooter ?? "Powered by Workage Institute →"}
-                  </a>
-                </DialogContent>
-              </Dialog>
+              <button
+                type="button"
+                onClick={openCopyrightModal}
+                className="mx-auto block w-fit text-center text-[0.75rem] text-white font-bold underline underline-offset-4 decoration-current decoration-1 transition hover:text-[#F3D98D] cursor-pointer"
+              >
+                {copyrightText}
+              </button>
             </div>
           )}
 
@@ -269,6 +218,7 @@ export function CoverScreen({
         {/* Accessibility Button */}
         {showAccessibility && (
           <button
+            type="button"
             onClick={handleAccessibilityClick}
             className="absolute bottom-24 right-5 flex items-center justify-center h-14 w-14 bg-[#272B27]/85 border border-white/25 backdrop-blur-md rounded-full text-[#E7C267] hover:text-[#F3D98D] transition-all cursor-pointer"
             aria-label="Accesibilidad"
@@ -277,8 +227,79 @@ export function CoverScreen({
           </button>
         )}
       </div>
-    </div>
 
+      {/* 2. Background Layers - BOTTOM LAYER */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Fallback Color */}
+        <div className="absolute inset-0 bg-[#101411]" />
+
+        {/* Background Image */}
+        {backgroundImage && (
+          <div className="absolute inset-0">
+            <Image
+              src={backgroundImage}
+              alt=""
+              fill
+              className="object-cover scale-[1.06]"
+              priority
+            />
+          </div>
+        )}
+
+        {/* Background Video */}
+        {backgroundVideo && (
+          <div className="absolute inset-0">
+            <video
+              src={backgroundVideo}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover scale-[1.06] pointer-events-none"
+              style={{ opacity: videoOpacity, filter: "brightness(0.75)" }}
+            />
+          </div>
+        )}
+
+        {/* Overlays */}
+        <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-[#101411]/95 pointer-events-none" />
+      </div>
+
+      {/* Global Modals */}
+      {isCopyrightModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 p-4 backdrop-blur-md">
+          <div className="relative w-full max-w-[520px] rounded-[32px] border border-white/10 bg-[#0f1611] p-6 text-white shadow-[0_25px_80px_rgba(0,0,0,0.9)] animate-in fade-in zoom-in duration-300">
+            <button
+              type="button"
+              onClick={closeCopyrightModal}
+              className="absolute right-4 top-4 rounded-full border border-white/10 bg-white/10 p-2 text-white transition hover:bg-white/20 z-[210]"
+              aria-label="Cerrar modal"
+            >
+              <CloseIcon className="h-4 w-4" />
+            </button>
+            <div className="text-center">
+              <p className="text-sm uppercase tracking-[2px] text-course-gold font-bold">
+                {copyrightModalTitle ?? "TODOS LOS DERECHOS RESERVADOS"}
+              </p>
+              <div className="mx-auto mt-4 mb-4 h-[1px] w-24 bg-[#6d683e]" />
+            </div>
+            <p className="text-sm leading-7 text-white/80">
+              {copyrightModalDescription ||
+                "Ninguna parte de este material puede reproducirse por ningún medio, incluyendo impresión, fotocopiado, grabación de audio o video, o cualquier sistema de almacenamiento o recuperación de información, sin permiso por escrito del titular de los derechos de autor."}
+            </p>
+            <a
+              href="https://workage.us/blog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-block text-course-gold font-bold underline underline-offset-4 decoration-current decoration-1 transition hover:text-[#F3D98D]"
+            >
+              {copyrightModalFooter ?? "Powered by Workage Institute →"}
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

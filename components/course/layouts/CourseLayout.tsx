@@ -23,6 +23,8 @@ export interface CourseLayoutProps {
   hideHeader?: boolean;
   /** Ocultar navegación inferior */
   hideBottomNav?: boolean;
+  /** Acciones personalizadas para el footer (reemplaza BottomNavigation) */
+  footerActions?: ReactNode;
   /** Fondo personalizado */
   backgroundColor?: string;
   /** Clase adicional para el contenedor */
@@ -39,6 +41,7 @@ export function CourseLayout({
   onNavItemClick,
   hideHeader = false,
   hideBottomNav = false,
+  footerActions,
   backgroundColor,
   className,
   contentClassName,
@@ -58,20 +61,26 @@ export function CourseLayout({
       <main
         className={cn(
           "flex-1 overflow-y-auto",
-          !hideBottomNav && "pb-20", // Padding para el nav inferior
+          (!hideBottomNav || footerActions) && "pb-24", // Padding para el nav inferior o botones
           contentClassName
         )}
       >
         {children}
       </main>
 
-      {/* Bottom Navigation */}
-      {!hideBottomNav && (
-        <BottomNavigation
-          items={navItems}
-          activeItemId={activeNavItem}
-          onItemClick={onNavItemClick}
-        />
+      {/* Bottom Navigation or Footer Actions */}
+      {footerActions ? (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#FBF9F4]/90 backdrop-blur-md border-t border-[#E7E3DB] max-w-md mx-auto rounded-t-3xl shadow-[0px_-12px_20px_rgba(27,28,25,0.06)] px-6 py-4 flex items-center justify-between gap-4">
+          {footerActions}
+        </div>
+      ) : (
+        !hideBottomNav && (
+          <BottomNavigation
+            items={navItems}
+            activeItemId={activeNavItem}
+            onItemClick={onNavItemClick}
+          />
+        )
       )}
     </div>
   );

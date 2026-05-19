@@ -1,11 +1,24 @@
 "use client";
 
-import { FigmaPresentation } from "@/components/course/FigmaPresentation";
+import { SlideRenderer } from "@/components/course/SlideRenderer";
+import { useCourseNavigation } from "@/hooks/use-course-navigation";
+import { structuredCourse } from "@/lib/course/content/course";
 
 export default function DemoPage() {
+  const { currentSlideId, goToNext, goBack, goToSlide, reset, completedSlides } = useCourseNavigation({
+    course: structuredCourse,
+    initialSlideId: "intro-cover",
+    onCourseComplete: () => reset(),
+  });
+
   return (
-    <div className="min-h-screen">
-      <FigmaPresentation />
-    </div>
+    <SlideRenderer
+      course={structuredCourse}
+      currentSlideId={currentSlideId}
+      onNext={goToNext}
+      onBack={goBack}
+      onGoToSlide={goToSlide}
+      completedSlides={completedSlides}
+    />
   );
 }

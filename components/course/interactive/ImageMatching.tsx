@@ -4,13 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { ImageMatchingItem } from "@/lib/course/types";
+import type { ImageMatchingItem, ImageMatchingExercise } from "@/lib/course/types";
 
 export interface ImageMatchingProps {
-  /** Instrucciones del ejercicio */
-  instructions: string;
-  /** Items para relacionar */
-  items: ImageMatchingItem[];
+  /** Ejercicio de relacionar imágenes */
+  exercise: ImageMatchingExercise;
   /** Callback cuando se completa */
   onComplete?: (answers: Record<string, string>) => void;
   /** Clase adicional */
@@ -18,11 +16,11 @@ export interface ImageMatchingProps {
 }
 
 export function ImageMatching({
-  instructions,
-  items,
+  exercise,
   onComplete,
   className,
 }: ImageMatchingProps) {
+  const { instructions, items } = exercise;
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 

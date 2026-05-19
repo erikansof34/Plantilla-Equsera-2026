@@ -8,7 +8,6 @@ import { ContinueButton } from "../ui/ContinueButton";
 import { ContentCard } from "../content/ContentCard";
 import { ImageMatching } from "../interactive/ImageMatching";
 import { CourseTitle } from "../ui/Typography";
-import { Horse } from "lucide-react";
 import type { ImageMatchingExercise, InfoCard } from "@/lib/course/types";
 
 export interface QuizScreenProps {
@@ -54,11 +53,8 @@ export function QuizScreen({
 
   const handleMatchingComplete = (results: Record<string, string>) => {
     setAnswers(results);
-  };
-
-  const handleConfirm = () => {
     setIsComplete(true);
-    onComplete?.(answers);
+    onComplete?.(results);
   };
 
   const allAnswered = Object.keys(answers).length === exercise.items.length;
